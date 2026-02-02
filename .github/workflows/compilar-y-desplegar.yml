@@ -1,0 +1,33 @@
+name: Compilar y desplegar
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '**'
+
+env:
+  VERSION_DOTNET: '9.0.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PROYECTO: BibliotecaAPI.csproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.VERSION_DOTNET }}
+
+      - name: Obteniendo las dependencias
+        run: dotnet restore ${{ env.PROYECTO }}
+
+      - name: Compilar
+        run: dotnet build ${{ env.PROYECTO }} --configuration Release --no-restore
