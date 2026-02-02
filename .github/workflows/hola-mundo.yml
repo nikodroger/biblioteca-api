@@ -1,31 +1,28 @@
 name: Hola mundo
 
-on: 
+on:
   workflow_dispatch: # ejecución manual
-  push: 
+  push:
     branches:
       - main
-    paths: 
+    paths:
       - '**'
-    pull_request:
-      branches:
-        - main
+  pull_request:
+    branches:
+      - main
 
-  jobs:
-    saludar:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Muestra mensaje hola mundo
-          run: echo "hola mundo, Nicolás"
+jobs:
+  saludar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-        - name: Checkout
-          uses: actions/checkout@v6.0.2
+      - name: Muestra mensaje hola mundo
+        run: echo "hola mundo, Nicolás"
 
-        - name: Listar los archivos del repositorio
-          run: 
-            echo "El repositorio ${{ github.repository  }} contiene los siguientes archivos:"
-            tree
-        
-
-
-    
+      - name: Listar los archivos del repositorio
+        run: |
+          echo "El repositorio ${{ github.repository }} contiene los siguientes archivos:"
+          ls -la
+          tree || true
